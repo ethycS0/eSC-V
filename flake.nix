@@ -16,7 +16,7 @@
       system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        toolchain = riscv-toolchains.packages.${system}.rv32i-cfi;
+        toolchain = riscv-toolchains.packages.${system}.escv;
 
         commonPackages = with pkgs; [
           # Languages
@@ -31,7 +31,7 @@
 
           # Compilation & Simulation
           ghdl
-          gtkwave
+          surfer
 
           # Synthesis & Implementation
           (pkgs.yosys.withPlugins [ pkgs.yosys-ghdl ])
@@ -47,7 +47,7 @@
           dtc
 
           # Documentation
-          texliveFull
+          texliveBasic
           doxygen
 
           # Build Tools
@@ -65,7 +65,6 @@
         devShells.default = pkgs.mkShell {
 
           packages = commonPackages ++ [ toolchain ];
-          env = toolchain.envVars;
           shellHook = ''
             export NIX_YOSYS_PLUGIN_DIRS="${pkgs.yosys-ghdl}/share/yosys/plugins"
           '';
